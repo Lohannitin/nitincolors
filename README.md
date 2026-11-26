@@ -8,6 +8,8 @@ cartopy and xarray plots.
 
 ![demo](https://raw.githubusercontent.com/Lohannitin/nitincolors/main/gallery/demo.png)
 
+**Browse every colormap with a live preview: https://lohannitin.github.io/nitincolors/**
+
 ## Install
 
 ```bash
@@ -88,7 +90,10 @@ nc.show_collection("cmocean")    # preview strip of a whole collection
 nc.show_all(save_dir="previews") # one PNG per collection
 ```
 
-Previews of every collection are in [`gallery/`](https://github.com/Lohannitin/nitincolors/tree/main/gallery).
+Browse them all, preview edits and copy the code at
+<https://lohannitin.github.io/nitincolors/>. Static previews of every collection are in
+[`gallery/`](https://github.com/Lohannitin/nitincolors/tree/main/gallery). After adding
+colour tables, rebuild the site with `python docs/build_site.py`.
 
 ## Name rules
 

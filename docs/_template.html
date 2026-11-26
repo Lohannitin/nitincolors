@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nitincolors colormap gallery</title>
+<meta name="description" content="Every colour table in the nitincolors Python library, with a live preview and the code to use it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --surround: #E4E6E8;   /* neutral grey: colours are judged against it */
+  --ink: #1E2329;
+  --ink-2: #59626D;
+  --rule: #C7CCD1;
+  --hover: #D8DBDE;
+  --selected: #CBD0D4;
+  --focus: #2458C6;
+  --error: #9E2A2F;
+  --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html {
+  background: var(--surround);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 100%;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+body { margin: 0; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+button, input, select { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- page grid ---------- */
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 452px;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "head dock" "list dock";
+  max-width: 1480px;
+  margin: 0 auto;
+}
+.masthead { grid-area: head; padding: 48px 40px 0; border-right: 1px solid var(--rule); min-width: 0; }
+.catalogue { grid-area: list; padding: 0 40px 72px; border-right: 1px solid var(--rule); min-width: 0; }
+.dock {
+  grid-area: dock;
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; overflow-y: auto;
+  padding: 36px 32px 40px;
+}
+
+/* ---------- masthead ---------- */
+.masthead h1 {
+  margin: 0;
+  font-size: clamp(2.75rem, 6.2vw, 5rem);
+  font-weight: 820;
+  font-variation-settings: "wdth" 125;
+  letter-spacing: -0.025em;
+  line-height: 0.92;
+}
+.brandstrip {
+  display: block; width: min(100%, 34rem); height: 12px; margin: 14px 0 22px;
+  image-rendering: pixelated;
+}
+.lede { max-width: 58ch; margin: 0 0 20px; font-size: 1.125rem; color: var(--ink-2); }
+.getit { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 0 0 40px; }
+.install {
+  display: inline-flex; align-items: stretch;
+  border: 1px solid var(--ink); background: #F1F2F3;
+}
+.install code { font-family: var(--mono); font-size: 0.9375rem; padding: 7px 12px; }
+.install button { border-left: 1px solid var(--ink); }
+.links { display: flex; gap: 20px; font-size: 0.9375rem; }
+
+/* ---------- buttons ---------- */
+.btn {
+  appearance: none; background: none; border: 0; cursor: pointer;
+  padding: 6px 12px; font-size: 0.875rem; font-weight: 600;
+  font-variation-settings: "wdth" 90;
+}
+.btn:hover { background: var(--hover); }
+.btn[data-done] { background: var(--ink); color: var(--surround); }
+
+/* ---------- finder ---------- */
+.finder {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px;
+  padding-bottom: 16px;
+}
+.search {
+  flex: 1 1 18rem; max-width: 30rem;
+  padding: 9px 12px; font-size: 1rem;
+  border: 1px solid var(--ink); background: #F7F8F8; border-radius: 0;
+}
+.search::placeholder { color: var(--ink-2); }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 0.9375rem; cursor: pointer; }
+.toggle code { font-family: var(--mono); font-size: 0.875em; }
+.toggle input { width: 18px; height: 18px; accent-color: var(--ink); margin: 0; }
+.count { margin: 0; font-size: 0.875rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.jump { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 0.9375rem; }
+.jump a { text-decoration: none; }
+.jump a:hover { text-decoration: underline; }
+.jump span { color: var(--ink-2); font-variant-numeric: tabular-nums; margin-left: 4px; }
+
+/* ---------- collections ---------- */
+.collection { margin-top: 44px; scroll-margin-top: 16px; }
+.collection h2 {
+  margin: 0; font-size: 1.5rem; font-weight: 720;
+  font-variation-settings: "wdth" 112; letter-spacing: -0.01em;
+}
+.collection h2 span { font-weight: 400; color: var(--ink-2); font-size: 1rem; margin-left: 8px; font-variant-numeric: tabular-nums; }
+.source { margin: 4px 0 12px; max-width: 70ch; font-size: 0.9375rem; color: var(--ink-2); }
+.maps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.maps li { display: grid; grid-template-columns: minmax(0, 1fr) auto; border-bottom: 1px solid var(--rule); }
+.pick {
+  appearance: none; background: none; border: 0; margin: 0; cursor: pointer;
+  width: 100%; text-align: left;
+  display: grid; grid-template-columns: 14rem minmax(0, 1fr) 3.25rem;
+  align-items: center; gap: 16px; padding: 7px 10px 7px 8px;
+}
+.pick:hover { background: var(--hover); }
+.maps li.is-selected .pick { background: var(--selected); box-shadow: inset 3px 0 0 var(--ink); }
+.pick .name {
+  font-size: 0.9375rem; font-weight: 520; font-variation-settings: "wdth" 76;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pick .n { text-align: right; font-size: 0.875rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.strip { display: block; width: 100%; height: 18px; image-rendering: pixelated; }
+.maps .btn { align-self: center; margin-right: 2px; }
+.empty { margin-top: 32px; font-size: 1.0625rem; }
+.footer { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 0.875rem; color: var(--ink-2); max-width: 75ch; }
+
+/* ---------- dock ---------- */
+.dock h2 {
+  margin: 0; font-size: 1.75rem; font-weight: 760; line-height: 1.1;
+  font-variation-settings: "wdth" 80; overflow-wrap: anywhere;
+}
+.meta { margin: 4px 0 16px; color: var(--ink-2); font-size: 0.9375rem; }
+.field-wrap { margin: 0; }
+#field { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #fff; }
+.seg { border: 0; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0; }
+.seg legend { float: left; margin-right: 12px; padding: 5px 0; font-size: 0.875rem; color: var(--ink-2); }
+.seg label { position: relative; cursor: pointer; }
+.seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.seg span {
+  display: block; padding: 5px 10px; font-size: 0.875rem; font-weight: 560;
+  font-variation-settings: "wdth" 88; border: 1px solid var(--rule); margin-left: -1px;
+}
+.seg input:checked + span { background: var(--ink); color: var(--surround); border-color: var(--ink); }
+.seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.field-note { margin: 8px 0 0; font-size: 0.875rem; color: var(--ink-2); min-height: 2.6em; }
+#result { margin-top: 14px; height: 26px; }
+.result-meta { margin: 6px 0 0; font-size: 0.875rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.result-meta.is-error { color: var(--error); font-weight: 600; }
+
+.edits { margin-top: 20px; border-top: 1px solid var(--ink); }
+.edit { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) 4.25rem; align-items: center; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+.edit > label, .edit > .lbl { font-size: 0.9375rem; font-weight: 560; font-variation-settings: "wdth" 90; }
+.edit output { white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; font-size: 0.875rem; color: var(--ink-2); }
+.edit input[type=range] { width: 100%; accent-color: var(--ink); margin: 0; }
+.edit input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--ink); margin: 0; justify-self: start; }
+.edit select { width: 100%; padding: 5px 6px; border: 1px solid var(--rule); background: #F7F8F8; border-radius: 0; }
+.twin { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.edit .btn { justify-self: end; white-space: nowrap; }
+.edit.edit-rev { grid-template-columns: 6.5rem minmax(0, 1fr) auto; }
+
+.code { margin-top: 16px; border: 1px solid var(--ink); background: #F7F8F8; }
+.code-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); padding-left: 12px; font-size: 0.875rem; color: var(--ink-2); }
+.code pre { margin: 0; padding: 12px; overflow-x: auto; }
+.code code { font-family: var(--mono); font-size: 0.875rem; line-height: 1.55; white-space: pre; }
+
+/* ---------- small screens ---------- */
+@media (max-width: 980px) {
+  .page { grid-template-columns: 1fr; grid-template-rows: auto; grid-template-areas: "head" "dock" "list"; }
+  .masthead { border-right: 0; padding: 32px 20px 0; }
+  .catalogue { border-right: 0; padding: 28px 20px 56px; border-top: 1px solid var(--rule); }
+  .dock { position: static; height: auto; overflow: visible; padding: 0 20px 32px; }
+  .getit { margin-bottom: 28px; }
+}
+@media (max-width: 620px) {
+  .seg legend { float: none; width: 100%; margin: 0 0 6px; padding: 0; }
+  .seg label { flex: 1 1 0; text-align: center; }
+  .seg span { padding: 6px 4px; }
+  .pick { grid-template-columns: minmax(0, 1fr) 3rem; grid-template-areas: "name n" "strip strip"; row-gap: 6px; }
+  .pick .name { grid-area: name; }
+  .pick .n { grid-area: n; }
+  .pick .strip { grid-area: strip; }
+  .edit { grid-template-columns: 5.5rem minmax(0, 1fr) 4.25rem; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<div class="page">
+    <header class="masthead">
+      <h1>nitincolors</h1>
+      <canvas class="brandstrip" id="brandstrip" width="256" height="1" aria-hidden="true"></canvas>
+      <p class="lede"><span id="total"></span> colour tables for Matplotlib, from NCAR NCL to cmocean. Click any map to preview it on a test field, edit it, and copy the code.</p>
+      <div class="getit">
+        <div class="install">
+          <code>pip install nitincolors</code>
+          <button class="btn" type="button" data-copy="pip install nitincolors" aria-label="Copy install command">Copy</button>
+        </div>
+        <div class="links">
+          <a href="https://github.com/Lohannitin/nitincolors">GitHub</a>
+          <a href="https://pypi.org/project/nitincolors/">PyPI</a>
+          <a href="https://github.com/Lohannitin/nitincolors#methods">All methods</a>
+        </div>
+      </div>
+    </header>
+
+  <main class="catalogue" id="top">
+    <div class="finder">
+      <label class="visually-hidden" for="q">Search colormaps</label>
+      <input class="search" id="q" type="search" autocomplete="off" spellcheck="false">
+      <label class="toggle"><input type="checkbox" id="revAll"> Show reversed (<code>_r</code>)</label>
+      <p class="count" id="count" aria-live="polite"></p>
+    </div>
+    <nav aria-label="Collections"><ul class="jump" id="jump"></ul></nav>
+
+    <div id="collections"></div>
+    <p class="empty" id="empty" hidden></p>
+
+    <footer class="footer">
+      <p>The colour tables belong to their original projects, listed in <a href="https://github.com/Lohannitin/nitincolors/blob/main/CREDITS.md">CREDITS.md</a>. Please credit the source collection when you publish a figure. nitincolors is based on Pratiman Patel's <a href="https://github.com/pratiman-91/colormaps">colormaps</a> package, MIT licence.</p>
+    </footer>
+  </main>
+
+  <aside class="dock" aria-label="Preview and edit">
+    <h2 id="selName">MPL_terrain</h2>
+    <p class="meta" id="selMeta"></p>
+
+    <figure class="field-wrap">
+      <canvas id="field" width="480" height="270" role="img" aria-label="Test field painted with the selected colormap"></canvas>
+      <fieldset class="seg" id="fieldPicker">
+        <legend>Test field</legend>
+      </fieldset>
+      <p class="field-note" id="fieldNote"></p>
+    </figure>
+
+    <canvas class="strip" id="result" width="256" height="1" aria-hidden="true"></canvas>
+    <p class="result-meta" id="resultMeta" aria-live="polite"></p>
+
+    <div class="code">
+      <div class="code-head"><span>Python</span><button class="btn" type="button" id="copyCode">Copy code</button></div>
+      <pre><code id="code"></code></pre>
+    </div>
+
+    <div class="edits">
+      <div class="edit edit-rev">
+        <label for="eRev">Reverse</label>
+        <input type="checkbox" id="eRev">
+        <button class="btn" type="button" id="reset">Reset edits</button>
+      </div>
+      <div class="edit">
+        <span class="lbl" id="cropLbl">Crop</span>
+        <div class="twin" role="group" aria-labelledby="cropLbl">
+          <input type="range" id="eCropS" min="0" max="1" step="0.01" value="0" aria-label="Crop start">
+          <input type="range" id="eCropE" min="0" max="1" step="0.01" value="1" aria-label="Crop end">
+        </div>
+        <output id="oCrop" for="eCropS eCropE"></output>
+      </div>
+      <div class="edit">
+        <label for="eShift">Shift</label>
+        <input type="range" id="eShift" min="-0.5" max="0.5" step="0.01" value="0">
+        <output id="oShift" for="eShift"></output>
+      </div>
+      <div class="edit">
+        <label for="eDisc">Discrete</label>
+        <input type="range" id="eDisc" min="0" max="64" step="1" value="0">
+        <output id="oDisc" for="eDisc"></output>
+      </div>
+      <div class="edit">
+        <label for="eMerge">Merge with</label>
+        <select id="eMerge"><option value="">Nothing</option></select>
+        <span></span>
+      </div>
+      <div class="edit" id="shareRow" hidden>
+        <label for="eShare">First map share</label>
+        <input type="range" id="eShare" min="0.1" max="0.9" step="0.05" value="0.5">
+        <output id="oShare" for="eShare"></output>
+      </div>
+    </div>
+
+  </aside>
+</div>
+<p class="visually-hidden" id="announce" aria-live="polite"></p>
+
+<script>
+const DATA = __DATA__;
+
+// MODEL START — mirrors nitincolors.Colormap so the generated code reproduces the preview exactly
+const Model = (() => {
+  function decode(hex) {
+    const n = hex.length / 6, a = new Float64Array(n * 3);
+    for (let i = 0; i < n; i++) for (let c = 0; c < 3; c++)
+      a[i * 3 + c] = parseInt(hex.substr(i * 6 + c * 2, 2), 16) / 255;
+    return a;
+  }
+  const len = a => a.length / 3;
+  function take(a, idx) {
+    const o = new Float64Array(idx.length * 3);
+    for (let k = 0; k < idx.length; k++) { const j = idx[k] * 3; o[k*3] = a[j]; o[k*3+1] = a[j+1]; o[k*3+2] = a[j+2]; }
+    return o;
+  }
+  // numpy.rint / Python round: halves go to the even neighbour
+  function rint(x) {
+    const f = Math.floor(x), d = x - f;
+    if (d === 0.5) return f % 2 === 0 ? f : f + 1;
+    return Math.round(x);
+  }
+  function linspace(start, stop, num) {
+    const y = new Float64Array(num);
+    if (num === 1) { y[0] = start; return y; }
+    const step = (stop - start) / (num - 1);
+    for (let k = 0; k < num; k++) y[k] = k * step + start;
+    y[num - 1] = stop;
+    return y;
+  }
+  function reversed(a) { const N = len(a), idx = []; for (let i = N - 1; i >= 0; i--) idx.push(i); return take(a, idx); }
+  function crop(a, start, stop) {
+    if (!(stop > start)) throw new Error("Crop end must be greater than crop start.");
+    const N = len(a), pos = linspace(0, 1, N), idx = [];
+    for (let i = 0; i < N; i++) if (pos[i] >= start - 1e-12 && pos[i] <= stop + 1e-12) idx.push(i);
+    if (idx.length < 2) throw new Error("This crop keeps fewer than 2 colours. Widen the range.");
+    return take(a, idx);
+  }
+  function shift(a, frac) {
+    const N = len(a), steps = ((rint(frac * N) % N) + N) % N, o = new Float64Array(a.length);
+    for (let i = 0; i < N; i++) { const j = ((i + steps) % N) * 3; o[j] = a[i*3]; o[j+1] = a[i*3+1]; o[j+2] = a[i*3+2]; }
+    return o;
+  }
+  function interpolate(a, n) {
+    const N = len(a);
+    if (N === 1 || n === 1) { const idx = new Array(n).fill(0); return take(a, idx); }
+    const xo = linspace(0, 1, N), xn = linspace(0, 1, n), o = new Float64Array(n * 3);
+    let j = 0;
+    for (let k = 0; k < n; k++) {
+      const x = xn[k];
+      while (j < N - 2 && xo[j + 1] < x) j++;
+      const t = xo[j + 1] === xo[j] ? 0 : (x - xo[j]) / (xo[j + 1] - xo[j]);
+      for (let c = 0; c < 3; c++) {
+        const lo = a[j*3+c], hi = a[(j+1)*3+c];
+        o[k*3+c] = x >= xo[N-1] ? a[(N-1)*3+c] : lo + (hi - lo) * t;
+      }
+    }
+    return o;
+  }
+  function discrete(a, n) {
+    const N = len(a);
+    if (n > N) return { a: interpolate(a, n), interpolated: true };
+    const idx = Array.from(linspace(0, N - 1, n), rint);
+    return { a: take(a, idx), interpolated: false };
+  }
+  // matplotlib ListedColormap.__call__ on floats in [0, 1]
+  function call(a, xs) {
+    const N = len(a), idx = [];
+    for (const x of xs) { let v = x * N; if (v === N) v = N - 1; idx.push(Math.min(Math.max(Math.trunc(v), 0), N - 1)); }
+    return take(a, idx);
+  }
+  function merge(maps, ratios, total = 256) {
+    const k = maps.length, s = ratios.reduce((p, q) => p + q, 0), r = ratios.map(x => x / s);
+    const counts = r.map(x => Math.max(2, Math.floor(x * total)));
+    const frac = r.map(x => x * total - Math.floor(x * total));
+    const order = frac.map((f, i) => [-f, i]).sort((p, q) => p[0] - q[0] || p[1] - q[1]).map(p => p[1]);
+    const extra = Math.max(0, total - counts.reduce((p, q) => p + q, 0));
+    for (const i of order.slice(0, extra)) counts[i] += 1;
+    const segs = maps.map((m, i) => call(m, linspace(0, 1, counts[i])));
+    const out = new Float64Array(segs.reduce((p, q) => p + q.length, 0));
+    let off = 0; for (const sgm of segs) { out.set(sgm, off); off += sgm.length; }
+    return out;
+  }
+  return { decode, len, reversed, crop, shift, discrete, interpolate, merge, call, rint, linspace };
+})();
+// MODEL END
+
+// ---------- data ----------
+const maps = [];
+for (const col of DATA.collections) {
+  col.items = col.maps.map(([name, hex, plain]) => {
+    const m = { name, col, plain: !!plain, hex, _rgb: null };
+    Object.defineProperty(m, "rgb", { get() { return this._rgb || (this._rgb = Model.decode(this.hex)); } });
+    maps.push(m);
+    return m;
+  });
+}
+const total = maps.length;
+const accessor = m => m.plain ? `nitincolors.${m.name}` : `nitincolors.${m.col.key}.${m.name}`;
+const hashOf = (m, rev) => (m.plain ? m.name : `${m.col.key}.${m.name}`) + (rev ? "_r" : "");
+
+// ---------- drawing ----------
+function paintStrip(canvas, a, rev = false) {
+  const N = Model.len(a);
+  canvas.width = N; canvas.height = 1;
+  const ctx = canvas.getContext("2d"), img = ctx.createImageData(N, 1);
+  for (let i = 0; i < N; i++) {
+    const j = (rev ? N - 1 - i : i) * 3;
+    img.data[i*4] = Math.round(a[j] * 255); img.data[i*4+1] = Math.round(a[j+1] * 255);
+    img.data[i*4+2] = Math.round(a[j+2] * 255); img.data[i*4+3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
+// ---------- test fields (computed once) ----------
+const FW = 480, FH = 270;
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function valueNoise(seed, cells) {
+  const r = rng(seed), g = [];
+  for (let j = 0; j <= cells + 1; j++) { g.push([]); for (let i = 0; i <= cells + 1; i++) g[j].push(r()); }
+  const s = t => t * t * (3 - 2 * t);
+  return (x, y) => {
+    const X = x * cells, Y = y * cells, i = Math.floor(X), j = Math.floor(Y), u = s(X - i), v = s(Y - j);
+    return (g[j][i] * (1 - u) + g[j][i+1] * u) * (1 - v) + (g[j+1][i] * (1 - u) + g[j+1][i+1] * u) * v;
+  };
+}
+function fbm(seed, oct, base) {
+  const layers = Array.from({ length: oct }, (_, o) => valueNoise(seed + o * 101, base * 2 ** o));
+  return (x, y) => { let v = 0, a = 1, s = 0; for (const L of layers) { v += a * L(x, y); s += a; a *= 0.5; } return v / s; };
+}
+function normalise(f, lo = null, hi = null) {
+  let mn = Infinity, mx = -Infinity;
+  for (const v of f) { if (v < mn) mn = v; if (v > mx) mx = v; }
+  if (lo !== null) { mn = lo; mx = hi; }
+  for (let i = 0; i < f.length; i++) f[i] = Math.min(1, Math.max(0, (f[i] - mn) / (mx - mn)));
+  return f;
+}
+const FIELDS = {
+  terrain: {
+    label: "Terrain",
+    note: "Synthetic relief from low ground to high peaks.",
+    make() {
+      const n = fbm(7, 6, 3), f = new Float32Array(FW * FH);
+      for (let y = 0; y < FH; y++) for (let x = 0; x < FW; x++) {
+        const u = x / FW, v = y / FH * (FH / FW);
+        const ridge = 0.55 * Math.exp(-((u - 0.62) ** 2) / 0.02 - ((v - 0.2) ** 2) / 0.03);
+        f[y * FW + x] = n(u, v + 0.1) ** 1.6 + ridge;
+      }
+      return normalise(f);
+    },
+  },
+  rain: {
+    label: "Rainfall",
+    note: "Mostly dry with a few rain cells, so the first colour covers most of the area.",
+    make() {
+      const n = fbm(31, 5, 2.5), f = new Float32Array(FW * FH);
+      for (let y = 0; y < FH; y++) for (let x = 0; x < FW; x++) {
+        const v = n(x / FW, y / FW);
+        f[y * FW + x] = Math.max(0, v - 0.5) ** 1.35;
+      }
+      return normalise(f);
+    },
+  },
+  anomaly: {
+    label: "Anomaly",
+    note: "Positive and negative departures centred on zero, for diverging maps.",
+    make() {
+      const n = fbm(53, 4, 2), f = new Float32Array(FW * FH);
+      let m = 0;
+      for (let y = 0; y < FH; y++) for (let x = 0; x < FW; x++) {
+        const u = x / FW * 2 * Math.PI, v = y / FH * 2 * Math.PI;
+        const val = Math.sin(1.3 * u + 0.4) * Math.cos(0.9 * v) + 0.9 * (n(x / FW, y / FW) - 0.5);
+        f[y * FW + x] = val; m = Math.max(m, Math.abs(val));
+      }
+      return normalise(f, -m, m);
+    },
+  },
+  ramp: {
+    label: "Ramp test",
+    note: "Kovesi's test: ripples on a ramp. They should stay equally visible across the width. Flat or jumpy bands mean the map hides or invents detail.",
+    make() {
+      const f = new Float32Array(FW * FH), amp = 0.05;
+      for (let y = 0; y < FH; y++) for (let x = 0; x < FW; x++) {
+        const ramp = amp + (1 - 2 * amp) * x / (FW - 1);
+        f[y * FW + x] = ramp + amp * Math.sin(2 * Math.PI * x / 8) * (1 - y / (FH - 1)) ** 2;
+      }
+      return normalise(f, 0, 1);
+    },
+  },
+};
+const fieldCache = {};
+const getField = k => fieldCache[k] || (fieldCache[k] = FIELDS[k].make());
+
+const fieldCanvas = document.getElementById("field");
+const fctx = fieldCanvas.getContext("2d");
+const fimg = fctx.createImageData(FW, FH);
+function paintField(a, key) {
+  const f = getField(key), N = Model.len(a), d = fimg.data;
+  for (let i = 0; i < f.length; i++) {
+    const j = Math.min(Math.floor(f[i] * N), N - 1) * 3;
+    d[i*4] = a[j] * 255; d[i*4+1] = a[j+1] * 255; d[i*4+2] = a[j+2] * 255; d[i*4+3] = 255;
+  }
+  fctx.putImageData(fimg, 0, 0);
+}
+
+// ---------- catalogue ----------
+const $ = id => document.getElementById(id);
+$("total").textContent = total.toLocaleString("en");
+$("q").placeholder = `Search ${total} colormaps, e.g. terrain, GMT, rain`;
+
+const rows = [];
+const container = $("collections"), jump = $("jump");
+for (const col of DATA.collections) {
+  const sec = document.createElement("section");
+  sec.className = "collection"; sec.id = `c-${col.key}`;
+  sec.innerHTML = `<h2>${col.label}<span>${col.items.length}</span></h2><p class="source"></p><ul class="maps"></ul>`;
+  const src = sec.querySelector(".source");
+  src.textContent = col.about + " ";
+  const a = document.createElement("a"); a.href = col.url; a.textContent = "Source"; src.appendChild(a);
+  const ul = sec.querySelector("ul");
+  const frag = document.createDocumentFragment();
+  for (const m of col.items) {
+    const li = document.createElement("li");
+    li.innerHTML = `<button class="pick" type="button"><span class="name"></span><canvas class="strip" height="1"></canvas><span class="n"></span></button><button class="btn copy" type="button">Copy</button>`;
+    li.querySelector(".n").textContent = m.hex.length / 6;
+    const row = { m, li, name: li.querySelector(".name"), strip: li.querySelector("canvas"), copy: li.querySelector(".copy"), section: sec,
+                  key: (m.name + " " + col.label + " " + col.key).toLowerCase() };
+    li.querySelector(".pick").addEventListener("click", () => select(m, revAll.checked));
+    row.copy.addEventListener("click", e => copy(row.copy, accessor(m) + (revAll.checked ? "_r" : "")));
+    rows.push(row);
+    frag.appendChild(li);
+  }
+  ul.appendChild(frag);
+  container.appendChild(sec);
+  const jl = document.createElement("li");
+  jl.innerHTML = `<a href="#c-${col.key}">${col.label}</a><span>${col.items.length}</span>`;
+  jump.appendChild(jl);
+}
+const revAll = $("revAll");
+function renderRows() {
+  const rev = revAll.checked;
+  for (const r of rows) {
+    r.name.textContent = r.m.name + (rev ? "_r" : "");
+    r.name.title = accessor(r.m) + (rev ? "_r" : "");
+    r.copy.setAttribute("aria-label", `Copy ${accessor(r.m)}${rev ? "_r" : ""}`);
+    paintStrip(r.strip, r.m.rgb, rev);
+  }
+}
+function filter() {
+  const q = $("q").value.trim().toLowerCase();
+  let shown = 0;
+  const visible = new Map();
+  for (const r of rows) {
+    const ok = !q || r.key.includes(q);
+    r.li.hidden = !ok;
+    if (ok) { shown++; visible.set(r.section, true); }
+  }
+  for (const r of rows) r.section.hidden = !visible.get(r.section);
+  $("count").textContent = q ? `${shown} of ${total} match` : `${total} colour tables`;
+  const empty = $("empty");
+  empty.hidden = shown > 0;
+  if (!shown) empty.textContent = `No colormap matches “${$("q").value.trim()}”. Try part of a name, such as terrain, GMT or rain.`;
+}
+$("q").addEventListener("input", filter);
+revAll.addEventListener("change", () => { renderRows(); });
+
+// ---------- dock ----------
+const state = { m: null, rev: false, cropS: 0, cropE: 1, shift: 0, disc: 0, merge: null, share: 0.5, field: "terrain" };
+const fmt = x => { let s = String(Math.round(x * 100) / 100); if (!s.includes(".")) s += ".0"; return s === "-0.0" ? "0.0" : s; };
+
+const picker = $("fieldPicker");
+for (const [k, f] of Object.entries(FIELDS)) {
+  const l = document.createElement("label");
+  l.innerHTML = `<input type="radio" name="field" value="${k}"${k === state.field ? " checked" : ""}><span>${f.label}</span>`;
+  l.querySelector("input").addEventListener("change", e => { state.field = e.target.value; update(); });
+  picker.appendChild(l);
+}
+const mergeSel = $("eMerge");
+for (const col of DATA.collections) {
+  const g = document.createElement("optgroup"); g.label = col.label;
+  for (const m of col.items) { const o = document.createElement("option"); o.value = `${col.key}:${m.name}`; o.textContent = m.name; g.appendChild(o); }
+  mergeSel.appendChild(g);
+}
+const byKey = new Map(maps.map(m => [`${m.col.key}:${m.name}`, m]));
+
+function compute() {
+  let a = state.m.rgb, expr = accessor(state.m) + (state.rev ? "_r" : ""), note = "";
+  if (state.rev) a = Model.reversed(a);
+  if (state.cropS > 0 || state.cropE < 1) { a = Model.crop(a, +fmt(state.cropS), +fmt(state.cropE)); expr += `.crop(${fmt(state.cropS)}, ${fmt(state.cropE)})`; }
+  if (state.shift !== 0) { a = Model.shift(a, +fmt(state.shift)); expr += `.shift(${fmt(state.shift)})`; }
+  if (state.disc > 0) {
+    const d = Model.discrete(a, state.disc); a = d.a; expr += `.discrete(${state.disc})`;
+    if (d.interpolated) note = " The map had fewer colours, so discrete() interpolates (and warns).";
+  }
+  if (state.merge) {
+    const r1 = +fmt(state.share), r2 = +fmt(1 - state.share);
+    a = Model.merge([a, state.merge.rgb], [r1, r2]);
+    expr = `nitincolors.merge(${expr}, ${accessor(state.merge)}, ratios=[${fmt(state.share)}, ${fmt(1 - state.share)}])`;
+  }
+  return { a, expr, note };
+}
+function update() {
+  const m = state.m;
+  $("selName").textContent = m.name + (state.rev ? "_r" : "");
+  $("selMeta").textContent = `${m.col.label}, ${m.hex.length / 6} colours`;
+  $("eRev").checked = state.rev;
+  $("oCrop").textContent = `${fmt(state.cropS)}–${fmt(state.cropE)}`;
+  $("oShift").textContent = fmt(state.shift);
+  $("oDisc").textContent = state.disc ? String(state.disc) : "Off";
+  $("oShare").textContent = fmt(state.share);
+  $("shareRow").hidden = !state.merge;
+  $("fieldNote").textContent = FIELDS[state.field].note;
+  const meta = $("resultMeta");
+  try {
+    const { a, expr, note } = compute();
+    paintField(a, state.field);
+    paintStrip($("result"), a);
+    paintStrip($("brandstrip"), a);
+    meta.classList.remove("is-error");
+    meta.textContent = `Result: ${Model.len(a)} colours.${note}`;
+    $("code").textContent = `import nitincolors\n\ncmap = ${expr}`;
+  } catch (err) {
+    meta.classList.add("is-error");
+    meta.textContent = err.message;
+  }
+}
+function select(m, rev = false, push = true) {
+  state.m = m; state.rev = rev;
+  for (const r of rows) r.li.classList.toggle("is-selected", r.m === m);
+  update();
+  if (push) history.replaceState(null, "", "#" + hashOf(m, rev));
+}
+function bindRange(id, key, cast = Number) {
+  $(id).addEventListener("input", e => { state[key] = cast(e.target.value); fixCrop(key); update(); });
+}
+function fixCrop(changed) {
+  if (state.cropE - state.cropS < 0.01) {
+    if (changed === "cropS") { state.cropE = Math.min(1, +(state.cropS + 0.01).toFixed(2)); if (state.cropE - state.cropS < 0.01) state.cropS = +(state.cropE - 0.01).toFixed(2); }
+    else if (changed === "cropE") { state.cropS = Math.max(0, +(state.cropE - 0.01).toFixed(2)); if (state.cropE - state.cropS < 0.01) state.cropE = +(state.cropS + 0.01).toFixed(2); }
+    $("eCropS").value = state.cropS; $("eCropE").value = state.cropE;
+  }
+}
+bindRange("eCropS", "cropS"); bindRange("eCropE", "cropE"); bindRange("eShift", "shift"); bindRange("eDisc", "disc"); bindRange("eShare", "share");
+$("eRev").addEventListener("change", e => { state.rev = e.target.checked; history.replaceState(null, "", "#" + hashOf(state.m, state.rev)); update(); });
+mergeSel.addEventListener("change", e => { state.merge = e.target.value ? byKey.get(e.target.value) : null; update(); });
+$("reset").addEventListener("click", () => {
+  Object.assign(state, { cropS: 0, cropE: 1, shift: 0, disc: 0, merge: null, share: 0.5 });
+  $("eCropS").value = 0; $("eCropE").value = 1; $("eShift").value = 0; $("eDisc").value = 0; $("eShare").value = 0.5; mergeSel.value = "";
+  update();
+});
+
+// ---------- copy ----------
+async function copy(btn, text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+  const old = btn.textContent;
+  btn.textContent = "Copied"; btn.dataset.done = "";
+  $("announce").textContent = `Copied ${text.split("\n").pop()}`;
+  setTimeout(() => { btn.textContent = old; delete btn.dataset.done; }, 1400);
+}
+document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => copy(b, b.dataset.copy)));
+$("copyCode").addEventListener("click", e => copy(e.currentTarget, $("code").textContent));
+
+// ---------- start ----------
+function fromHash() {
+  let h = decodeURIComponent(location.hash.slice(1));
+  if (!h || h.startsWith("c-")) return null;
+  let rev = false;
+  const find = s => s.includes(".")
+    ? maps.find(m => `${m.col.key}.${m.name}` === s)
+    : maps.find(m => m.plain && m.name === s);
+  let m = find(h);
+  if (!m && h.endsWith("_r")) { m = find(h.slice(0, -2)); rev = !!m; }
+  return m ? { m, rev } : null;
+}
+renderRows();
+filter();
+const start = fromHash() || { m: maps.find(m => m.plain && m.name === "MPL_terrain"), rev: false };
+select(start.m, start.rev, false);
+window.addEventListener("hashchange", () => { const s = fromHash(); if (s) select(s.m, s.rev, false); });
+</script>
+</body>
+</html>

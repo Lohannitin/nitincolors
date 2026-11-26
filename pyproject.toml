@@ -25,6 +25,7 @@ test = ["pytest"]
 
 [project.urls]
 Homepage = "https://github.com/Lohannitin/nitincolors"
+Documentation = "https://lohannitin.github.io/nitincolors/"
 Source = "https://github.com/Lohannitin/nitincolors"
 Issues = "https://github.com/Lohannitin/nitincolors/issues"
 
