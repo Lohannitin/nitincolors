@@ -86,10 +86,14 @@ def _resolve(name: str, collection: str | None = None) -> Colormap:
 
 
 def _suggest(name: str) -> str:
-    close = difflib.get_close_matches(name, list(_FLAT) + list(_USER), n=4,
+    rev = name.endswith("_r")
+    base = name[:-2] if rev else name
+    close = difflib.get_close_matches(base, list(_FLAT) + list(_USER), n=4,
                                       cutoff=0.6)
     if not close:
-        close = [n for n in _FLAT if name.lower() in n.lower()][:4]
+        close = [n for n in _FLAT if base.lower() in n.lower()][:4]
+    if rev:
+        close = [c + "_r" for c in close]
     return f" Did you mean: {', '.join(close)}?" if close else ""
 
 

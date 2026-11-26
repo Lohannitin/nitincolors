@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,12 +8,13 @@ dynamic = ["version"]
 description = "Nitin's colormap library: 980+ scientific colour tables with merge, crop, shift, discrete and level tools for Matplotlib"
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE", "CREDITS.md", "src/nitincolors/data/ncar_ncl/Copyright"]
 authors = [{ name = "Nitin Lohan" }]
 dependencies = ["matplotlib>=3.6", "numpy"]
+keywords = ["colormap", "colormaps", "matplotlib", "NCL", "climate", "meteorology", "visualization"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Visualization",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
@@ -24,6 +25,8 @@ test = ["pytest"]
 
 [project.urls]
 Homepage = "https://github.com/Lohannitin/nitincolors"
+Source = "https://github.com/Lohannitin/nitincolors"
+Issues = "https://github.com/Lohannitin/nitincolors/issues"
 
 [tool.setuptools.dynamic]
 version = { attr = "nitincolors._version.__version__" }

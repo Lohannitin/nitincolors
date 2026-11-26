@@ -6,13 +6,15 @@ CARTOColors, CarbonPlan, SciVisColor, cubehelix, Tableau). Each one comes
 with tools to merge, crop, shift, discretise and level it for Matplotlib,
 cartopy and xarray plots.
 
-![demo](gallery/demo.png)
+![demo](https://raw.githubusercontent.com/Lohannitin/nitincolors/main/gallery/demo.png)
 
 ## Install
 
 ```bash
-pip install git+https://github.com/Lohannitin/nitincolors.git
+pip install nitincolors
 ```
+
+Latest development version: `pip install git+https://github.com/Lohannitin/nitincolors.git`
 
 Requires Python ≥ 3.9, Matplotlib ≥ 3.6 and NumPy.
 
@@ -86,7 +88,7 @@ nc.show_collection("cmocean")    # preview strip of a whole collection
 nc.show_all(save_dir="previews") # one PNG per collection
 ```
 
-Previews of every collection are in [`gallery/`](gallery).
+Previews of every collection are in [`gallery/`](https://github.com/Lohannitin/nitincolors/tree/main/gallery).
 
 ## Name rules
 
@@ -138,5 +140,5 @@ and every method.
 
 ## Credits
 
-See [CREDITS.md](CREDITS.md). The colour tables belong to their original
+See [CREDITS.md](https://github.com/Lohannitin/nitincolors/blob/main/CREDITS.md). The colour tables belong to their original
 authors. Please credit the source collection when publishing a figure.

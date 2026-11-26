@@ -80,6 +80,8 @@ def test_ncl_placeholder_rows():
 def test_unknown_name_suggests():
     with pytest.raises(AttributeError, match="MPL_terrain"):
         nc.MPL_terain
+    with pytest.raises(AttributeError, match="MPL_terrain_r"):
+        nc.MPL_teerain_r
     with pytest.raises(KeyError):
         nc.get("definitely_not_a_map")
 
