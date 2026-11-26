@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nitincolors"
+dynamic = ["version"]
+description = "Nitin's colormap library: 980+ scientific colour tables with merge, crop, shift, discrete and level tools for Matplotlib"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Nitin Lohan" }]
+dependencies = ["matplotlib>=3.6", "numpy"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/Lohannitin/nitincolors"
+
+[tool.setuptools.dynamic]
+version = { attr = "nitincolors._version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+nitincolors = ["data/*/*.rgb", "data/*/Copyright"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
